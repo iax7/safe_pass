@@ -1,0 +1,9 @@
+<%= render_flash_stream %>
+<%= turbo_stream.remove(@entry) %>
+<%= turbo_stream.update("main-dashboard") do %>
+  <% if @default %>
+    <%= render partial: "entries/main", locals: { entry: @default } %>
+  <% else %>
+    <%= render html: empty_entries_message %>
+  <% end %>
+<% end %>

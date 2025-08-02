@@ -7,12 +7,18 @@
     <div class="entries-card">
       <div class="entries-card__sidebar">
         <nav id="entries-list" class="nav flex-column">
-          <%= render @entries %>
+          <% if @entries.any? %>
+            <%= render @entries %>
+          <% end %>
         </nav>
       </div>
       <div class="entries-card__main">
         <%= turbo_frame_tag "main-dashboard" do %>
-          <%= render partial: "entries/main", locals: { entry: @main_entry } %>
+          <% if @main_entry %>
+            <%= render partial: "entries/main", locals: { entry: @main_entry } %>
+          <% else %>
+            <%= empty_entries_message %>
+          <% end %>
         <% end %>
       </div>
     </div>
