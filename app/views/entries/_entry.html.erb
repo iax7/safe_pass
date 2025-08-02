@@ -1,5 +1,5 @@
-<%= link_to(entry_path(entry), class: "nav-link") do %>
-  <%= render layout: "entries/name", locals: {entry: entry} do %>
+<%= link_to(entry_path(entry), class: "nav-link", data: { turbo_frame: "main-dashboard" }) do %>
+  <%= render layout: "entries/name", locals: { entry: entry } do %>
     <%= entry.name %>
   <% end %>
 <% end %>
