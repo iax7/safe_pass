@@ -13,6 +13,13 @@ Rails.application.routes.draw do
   # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
+  namespace :api do
+    namespace :v1 do
+      post :auth, to: "auth#create"
+      resources :entries
+    end
+  end
+
   resources :entries
 
   # Defines the root path route ("/")
