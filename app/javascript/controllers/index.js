@@ -2,7 +2,14 @@
 // Run that command whenever you add a new controller or create them with
 // ./bin/rails generate stimulus controllerName
 
-import { application } from "./application"
+import {application} from "./application"
 
+import ClipboardController from "./clipboard_controller";
+import Search_controller from "./search_controller";
 import ToastController from "./toast_controller"
+import TogglePasswordController from "./toggle_password_controller";
+
+application.register("clipboard", ClipboardController)
+application.register("search", Search_controller)
 application.register("toast", ToastController)
+application.register("toggle-password", TogglePasswordController)

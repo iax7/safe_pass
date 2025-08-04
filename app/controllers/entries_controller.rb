@@ -3,8 +3,16 @@ class EntriesController < ApplicationController
   before_action :set_entry, only: %i[show edit update destroy]
 
   def index
-    @entries = current_user.entries.order(:name)
+    @entries = current_user.entries.search(params[:name])
     @main_entry = @entries.first
+
+    return unless params[:name].present?
+    if @entries.size == 1
+      render turbo_stream: [
+        turbo_stream.update("main-dashboard", partial: "entries/main", locals: { entry: @entries.first }),
+        turbo_stream.update("entries-list", partial: "entries/entry", locals: { entry: @entries.first })
+      ]
+    end
   end
 
   def show
@@ -21,7 +29,7 @@ class EntriesController < ApplicationController
       flash.now[:notice] = "<strong>#{@entry.name}</strong> was successfully created.".html_safe
       respond_to do |format|
         format.html { redirect_to root_path }
-        format.turbo_stream { }
+        format.turbo_stream {}
       end
     else
       render :new, status: :unprocessable_entity
@@ -36,7 +44,7 @@ class EntriesController < ApplicationController
       flash.now[:notice] = "<strong>#{@entry.name}</strong> was successfully updated.".html_safe
       respond_to do |format|
         format.html { redirect_to @entry }
-        format.turbo_stream { }
+        format.turbo_stream {}
       end
     else
       render :edit, status: :unprocessable_entity
@@ -49,7 +57,7 @@ class EntriesController < ApplicationController
     flash.now[:notice] = "<strong>#{@entry.name}</strong> was successfully deleted.".html_safe
     respond_to do |format|
       format.html { redirect_to root_path }
-      format.turbo_stream { }
+      format.turbo_stream {}
     end
   end
 

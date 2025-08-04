@@ -7,6 +7,13 @@ class Entry < ApplicationRecord
   encrypts :username, deterministic: true
   encrypts :password
 
+  # scope :search_name, ->(name) { where("name ILIKE ?", "%#{name}%") } if name.present? # PostgreSQL
+  scope :search_name, ->(name) { where("LOWER(name) LIKE ?", "%#{name&.downcase}%") } if name.present? # SQLite
+
+  def self.search(name)
+    search_name(name).order(:name)
+  end
+
   private
 
   def validate_url
